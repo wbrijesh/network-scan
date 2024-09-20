@@ -3,8 +3,8 @@ package database
 import (
 	"database/sql"
 	"fmt"
+	"network-scan/utils"
 	"os"
-	"scan-network/utils"
 
 	_ "github.com/mattn/go-sqlite3"
 )

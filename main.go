@@ -4,9 +4,9 @@ import (
 	"log"
 	"os"
 
-	"scan-network/database"
-	"scan-network/oui"
-	"scan-network/utils"
+	"network-scan/database"
+	"network-scan/oui"
+	"network-scan/utils"
 )
 
 const dbPath string = "./oui.db"
@@ -44,6 +44,6 @@ func main() {
 	}
 	defer file.Close()
 
-	oui.ScanDataFromTextFile("/Users/brijesh/projects/ongoing/scan-network/standards-oui.ieee.org.txt", db)
+	oui.ScanDataFromTextFile("/Users/brijesh/projects/ongoing/network-scan/standards-oui.ieee.org.txt", db)
 	utils.PrintInColor("OUI data imported successfully", 28)
 }

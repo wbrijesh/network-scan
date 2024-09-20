@@ -3,9 +3,9 @@ package oui
 import (
 	"bufio"
 	"fmt"
+	"network-scan/database"
 	"os"
 	"regexp"
-	"scan-network/database"
 )
 
 func ScanDataFromTextFile(filePath string, db *database.Database) {
