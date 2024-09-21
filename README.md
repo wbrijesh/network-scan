@@ -11,10 +11,10 @@ It's a middleground between free but complex tools like nmap and paid but easy t
 
 ## Features
 
-- [ ] Discover all the devices on your network
+- [x] Discover devices on local network
 - [ ] Show device vendor info
-- [ ] If the device can be pinged
-- [ ] mDNS name of the device
-- [ ] scan for open ports on devices (unsure about this one)
+- [x] Check wether device is online using ICMP
+- [ ] Print mDNS name of the device
+- [ ] Scan for open ports on devices (unsure about this one)
 - [ ] install using shell command: `curl script_url | bash`
 - [ ] install using go: `go install`

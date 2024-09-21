@@ -2,18 +2,14 @@ package arp
 
 import (
 	"fmt"
+	"network-scan/definitions"
 	"os/exec"
 	"regexp"
 	"runtime"
 	"strings"
 )
 
-type Device struct {
-	IP  string
-	MAC string
-}
-
-func GetDevices() ([]Device, error) {
+func GetDevices() ([]definitions.Device, error) {
 	if runtime.GOOS == "windows" {
 		return nil, fmt.Errorf("this program is not supported on Windows")
 	}
@@ -27,8 +23,8 @@ func GetDevices() ([]Device, error) {
 	return parseARPTable(string(output)), nil
 }
 
-func parseARPTable(arpTable string) []Device {
-	var devices []Device
+func parseARPTable(arpTable string) []definitions.Device {
+	var devices []definitions.Device
 
 	pattern := regexp.MustCompile(`(\d+\.\d+\.\d+\.\d+).*?(\S+:\S+:\S+:\S+:\S+:\S+)`)
 
@@ -36,7 +32,7 @@ func parseARPTable(arpTable string) []Device {
 	for _, line := range lines {
 		matches := pattern.FindStringSubmatch(line)
 		if len(matches) == 3 {
-			device := Device{
+			device := definitions.Device{
 				IP:  matches[1],
 				MAC: matches[2],
 			}

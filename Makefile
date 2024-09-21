@@ -24,7 +24,7 @@ build:
 setup:
 	@rm -f standards-oui.ieee.org.txt
 	@echo "Downloading OUI data..."
-	@wget -q https://raw.githubusercontent.com/wbrijesh/static-files/refs/heads/main/standards-oui.ieee.org.txt -O standards-oui.ieee.org.txt
+	@wget -q https://raw.githubusercontent.com/wbrijesh/network-scan/refs/heads/main/standards-oui.ieee.org.txt -O standards-oui.ieee.org.txt
 	@if [ $$? -eq 0 ]; then \
 		echo "✅ Successfully downloaded OUI data"; \
 	else \

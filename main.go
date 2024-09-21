@@ -7,6 +7,8 @@ import (
 
 	"network-scan/arp"
 	"network-scan/database"
+	"network-scan/definitions"
+	"network-scan/icmp"
 	"network-scan/oui"
 	"network-scan/utils"
 )
@@ -32,6 +34,8 @@ func init() {
 }
 
 func main() {
+	var devices []definitions.Device
+
 	db, err := database.New(dbPath)
 	if err != nil {
 		log.Fatalf("Error opening database: %v", err)
@@ -51,17 +55,42 @@ func main() {
 		utils.PrintInColor("OUI data imported successfully", 28)
 	})
 
-	utils.ConfirmBeforeRunning("Do you want to scan for devices in your network?", func() {
-		devices, err := arp.GetDevices()
+	fmt.Println("Scanning network for devices...")
+	devices, err = arp.GetDevices()
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+
+	fmt.Println("Devices found:")
+	for _, device := range devices {
+		fmt.Printf("IP: %s, MAC: %s\n", device.IP, device.MAC)
+	}
+
+	utils.ConfirmBeforeRunning("Do you want to check reachability of all devices?", func() {
+		isRoot, err := utils.CheckSudoPrivileges()
 		if err != nil {
-			fmt.Println("Error:", err)
+			fmt.Printf("Error checking root status: %v\n", err)
+			return
+		}
+		if !isRoot {
+			fmt.Println("ERROR: sudo previleges are needed for creating raw sockets which is needed to send ICMP packets")
 			return
 		}
 
-		fmt.Println("Devices found:")
 		for _, device := range devices {
-			fmt.Printf("IP: %s, MAC: %s\n", device.IP, device.MAC)
+			ip := device.IP
+
+			online, err := icmp.CheckICMPReachability(ip)
+			if err != nil {
+				log.Fatalf("Error checking device status: %v", err)
+			}
+
+			if online {
+				fmt.Printf("Device at %s is online\n", ip)
+			} else {
+				fmt.Printf("Device at %s is offline\n", ip)
+			}
 		}
 	})
-
 }
